@@ -8,15 +8,15 @@
 :root {
   --primary-color: #000000;
   --secondary-color: #FFFFFC;
-  --accent1-color: #E6E2DB;
-  --accent2-color: #3755EE;
+  --accent1-color: #F4F4F1;
+  --accent2-color: #1230CA;
   --accent3-color: #FF871F;
-  --accent4-color: #F50000;
+  --accent4-color: #C20000;
 
   --nav-background-color: #FF871F;
   --nav-link-color:#000000;
   --nav-hover-link-color: #000000;
-  --nav-hover-background-color: #3755EE;
+  --nav-hover-background-color: #1230CA;
 
   --heading-font: 'Crimson Pro', serif;
   --paragraph-font: 'Nunito', sans-serif;
@@ -93,11 +93,12 @@ nav li {
   text-decoration: none;
   list-style-type: none;
   padding: 1rem;
+  margin:.3rem;
 }
 
 nav li:hover {
   background-color: var(--accent3-color);
-  transform: scale(1.2);
+  transform: scale(1.1);
   font-weight: bold;
   cursor: pointer;
 }
@@ -156,17 +157,22 @@ body {
 /* gride container with reviews and upgrades */
 .grid-container {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-areas: 
+    "reviews reviews"
+    "upgrades upgrades";
   gap: 2rem;
   padding: 1rem;
 }
 /* Reviews */
-
+.reviews-container {
+  grid-area: reviews;
+}
 
 /* upgrades */
 .upgrades-container {
   display: flex;
   flex-direction: column;
+  grid-area: upgrades;
 }
 
 .upgrade-cards {
@@ -196,6 +202,7 @@ body {
   justify-content: center;
   font-family: var(--paragraph-font);
   font-size: 1.25rem;
+  color: var(--accent2-color);
 }
 
 
@@ -204,14 +211,11 @@ body {
 footer {
   font-family: var(--paragraph-font);
   font-size: 1rem;
-  background-color: var(--accent1-color);
+  background-color: var(--accent3-color);
   padding: .5rem 2rem;
 }
 
 @media only screen and (min-width: 900px) {
-  html, body {
-    height: 100%;
-  }
   body {
     background-image: url('../../images/site/small_check.jpg');
     background-size: cover;
@@ -230,7 +234,7 @@ footer {
   }
 
   .grid-container {
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
+    grid-template-areas: 
+      "upgrades reviews";
   }
 }
