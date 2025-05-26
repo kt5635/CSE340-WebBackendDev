@@ -37,6 +37,10 @@ async function getInventory(){
  * ************************** */
 async function getInventoryByInventoryId(inv_id) {
   try {
+    if (isNaN(inv_id) || !Number.isInteger(Number(inv_id))) {
+      throw new Error(`Invalid inventory ID: ${inv_id} is not an integer.`);
+    }
+    
     const data = await pool.query(
       `SELECT * FROM public.inventory WHERE inv_id = $1`,
       [inv_id]

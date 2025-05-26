@@ -253,7 +253,7 @@ hr {
   display: none;
 }
 /* detail view */
-/* #inv-single {
+#inv-single {
   list-style: none;
   padding: 2rem;
   color: var(--accent3-color);
@@ -263,12 +263,12 @@ hr {
   background-color: var(--primary-color);
   padding: 2rem 1rem;
   border-radius: 15px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   align-items: center;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-} */
+}
 /* footer */
 
 footer {
@@ -305,10 +305,17 @@ footer {
 
   #inv-display {
     grid-template-columns: repeat(3, 1fr); 
-
   }
 
     #inv-display li {
     min-height: 350px; 
+  }
+
+  #inv-single li {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .vehicleDetails {
+    padding: 1rem;
   }
 }
