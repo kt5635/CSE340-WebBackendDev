@@ -269,6 +269,17 @@ hr {
   text-align: center;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
+#inv-single img {
+  width: 100%;
+  padding: 1rem 2rem;
+}
+
+/* error page */
+
+.error-container {
+  padding: 0rem 2rem;
+}
 /* footer */
 
 footer {
@@ -277,6 +288,15 @@ footer {
   background-color: var(--accent3-color);
   padding: .5rem 2rem;
 }
+
+footer a {
+  text-decoration: none;
+  font-family: var(--paragraph-font);
+  color: var(--primary-color);
+  font-size: 1rem;;
+  padding: 0rem;
+}
+
 
 @media only screen and (min-width: 900px) {
   body {

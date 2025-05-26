@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title><%= title %></title> <!-- Using the passed title -->
-    <link rel="stylesheet" href="/css/styles.css"> <!-- Adjust stylesheet if needed -->
-</head>
-<body>
-    <header>
-        <h1><%= title %></h1> <!-- The title passed in from the render function -->
-    </header>
-    
-    <main>
-        <p><%- message %></p> <!-- Displays the error message using unescaped EJS -->
-    </main>
-</body>
-</html>
+<div class="error-container">
+    <h1><%= title %></h1>
+    <p><%= message %></p>
+</div>
