@@ -28,7 +28,7 @@ Util.getNav = async function (req, res, next) {
 * Build the classification view HTML
 * ************************************ */
 Util.buildClassificationGrid = async function(data){
-  let grid
+  let grid = ""
   if(data.length > 0){
     grid = '<ul id="inv-display">'
     data.forEach(vehicle => { 
@@ -56,6 +56,37 @@ Util.buildClassificationGrid = async function(data){
   }
   return grid
 }
+
+/* **************************************
+* Build the single view HTML
+* ************************************ */
+Util.buildVehicleDetail = function(vehicle) {
+  if (!vehicle) {
+    return '<p class="notice">Vehicle details not found.</p>';
+  }
+
+  let vehicleTitle = `${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}`;
+  
+  let detailHTML = `
+    <ul id="inv-single">
+        <li>
+            <a href="/inv/detail/${vehicle.inv_id}" title="View ${vehicleTitle} details">
+                <img src="${vehicle.inv_image}" alt="Image of ${vehicleTitle} on CSE Motors">
+            </a>
+            <div class="vehicleDetails">
+                <hr />
+                <h2>${vehicleTitle}</h2>
+                <p class="price">$${new Intl.NumberFormat('en-US').format(vehicle.inv_price)}</p>
+                <p class="mileage">Mileage: ${new Intl.NumberFormat('en-US').format(vehicle.inv_miles)} miles</p>
+                <p class="color">Color: ${vehicle.inv_color}</p>
+                <p class="description">${vehicle.inv_description}</p>
+            </div>
+        </li>
+    </ul>
+  `;
+
+  return detailHTML;
+};
 
 /* ****************************************
  * Middleware For Handling Errors

@@ -25,4 +25,28 @@ async function getInventoryByClassificationId(classification_id) {
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId};
+/* ***************************
+ *  Get all single view inventory data
+ * ************************** */
+async function getInventory(){
+  return await pool.query("SELECT * FROM public.inventory ORDER BY inv_make")
+}
+
+/* ***************************
+ *  Get all single view inventory items and inv_id
+ * ************************** */
+async function getInventoryByInventoryId(inv_id) {
+  try {
+    const data = await pool.query(
+      `SELECT * FROM public.inventory WHERE inv_id = $1`,
+      [inv_id]
+    );
+    
+    return data.rows;
+  } catch (error) {
+    console.error("Error retrieving inventory: ", error)
+    throw error;
+  }
+}
+
+module.exports = {getClassifications, getInventoryByClassificationId, getInventory, getInventoryByInventoryId};
