@@ -45,10 +45,10 @@ app.use(async (err, req, res, next) => {
   let statusCode = err.status || 500;
   let message = statusCode === 404 
     ? err.message 
-    : "500 - Something went wrong on our end.";
+    : "Something went wrong on our end.";
 
   res.status(statusCode).render("errors/error", {
-    title: statusCode === 500 ? "Server Error" : err.status,
+    title: statusCode === 500 ? "500" : err.status,
     message,
     nav,
   });
