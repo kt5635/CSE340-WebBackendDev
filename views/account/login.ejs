@@ -1,0 +1,23 @@
+<!-- Content Heading -->
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<!-- flash message -->
+<%- messages() %>
+
+<!-- Login form -->
+ <div class="form-container">
+    <form action="login.php" method="POST">
+        <label for="email">Email:</label>
+        <input type="email" name="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" required>
+
+        <button type="submit">Login</button>
+    </form>
+    <a class="signup-link" href="/account/register">No Account? <span class="underline">Sign-up</span></a>
+ </div>

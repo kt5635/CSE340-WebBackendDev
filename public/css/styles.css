@@ -275,6 +275,60 @@ hr {
   padding: 1rem 2rem;
 }
 
+/* Login page */
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+}
+
+form {
+  min-width: 25rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--accent2-color);
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  background-color: var(--primary-color);
+}
+
+input, button {
+  display: block;
+  width: 100%;
+  padding: .5rem;
+  margin: .5rem;
+  border-radius: 5px;
+  font-size: 1.25rem;
+}
+
+ label {
+  font-family: var(--paragraph-font);
+  color: var(--accent3-color);  
+  font-size: 1.25rem;
+ }
+
+ .signup-link {
+  text-decoration: none;
+  margin-bottom: 2rem;
+  color: var(--primary-color);
+  font-family: var(--paragraph-font);
+  font-size: 1.25rem;
+ }
+
+.underline {
+    text-decoration: underline;
+}
+
+.password-note {
+  color: var(--accent3-color);
+} 
+.password-note li {
+  list-style: none;
+  font-size: 1rem;
+}
+
 /* error page */
 
 .error-container {
