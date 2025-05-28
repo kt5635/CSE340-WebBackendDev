@@ -280,6 +280,16 @@ hr {
 .error-container {
   padding: 0rem 2rem;
 }
+
+/* Flash message
+.notice {
+  list-style: none;
+  font-family: var(--paragraph-font);
+  font-size: 1.25rem;
+  color: var(--accent3-color);
+  font-weight: bold;
+} */
+
 /* footer */
 
 footer {
