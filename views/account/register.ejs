@@ -12,19 +12,16 @@
  <div class="form-container">
     <form action="/account/register" method="post">
         <label for="first-name">First Name</label>
-        <input type="text" name="first-name" id="first-name">
+        <input type="text" name="account_firstname" id="first-name">
 
         <label for="Last-name">Last Name</label>
-        <input type="text" name="last-name" id="last-name">
+        <input type="text" name="account_lastname" id="last-name">
 
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="account_email" required>
 
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" 
-                pattern="(?=.*[A-Z])(?=.*[0-9])(?=.*[\W])(?=.{12,})" 
-                title="Must be at least 12 characters, contain 1 capital letter, 1 number, and 1 special character." 
-                required>
+        <input type="password" id="password" name="account_password" required>
         <div class="password-note">
           <ul>
             <li>Password must have the following:</li>
