@@ -38,6 +38,10 @@ invCont.buildByClassificationId = async function (req, res, next) {
   }
 };
 
+/* ***************************
+ *  Build inventory by single view
+ * ************************** */
+
 invCont.buildByInventoryId = async function (req, res, next) {
   const inv_id = req.params.inventoryId;
 
@@ -67,6 +71,69 @@ invCont.buildByInventoryId = async function (req, res, next) {
   }
 };
 
+/* ***************************
+ *  Build management view
+ * ************************** */
+
+invCont.buildManagementView = async function (req, res, next) {
+  let nav;
+  try {
+    nav = await utilities.getNav();
+  } catch (error) {
+    console.error("Navigation error:", error);
+    return next({ status: 500, message: "Failed to load navigation." });
+  }
+
+  res.render("inventory/management", {
+    title: "Vehicle Management",
+    nav,
+    errors: null 
+  });
+};
+
+/* ***************************
+ *  Build add classification view
+ * ************************** */
+invCont.buildAddClassificationView = async function (req, res) {
+    let nav = await utilities.getNav();
+  res.render("inventory/add-classification", {
+    title: "Add New Classification",
+    nav,
+    errors: null
+  });
+}
+
+invCont.processClassification = async function (req, res) {
+  let nav = await utilities.getNav();
+  const { classification_name } = req.body;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    req.flash("notice", "Validation errors occurred. Please correct the issues.");
+    return res.status(400).render("inventory/add-classification", {
+      title: "Add New Classification",
+      nav,
+      errors,
+    });
+  }
+
+  try {
+    const insertResult = await invModel.addClassification(classification_name);
+
+    if (insertResult) {
+      nav = await utilities.getNav(); 
+      req.flash("notice", "New classification added successfully!");
+      res.status(201).render("inventory/management", { title: "Inventory Management", nav });
+    } else {
+      req.flash("notice", "Failed to add classification. Please try again.");
+      res.status(500).render("inventory/add-classification", { title: "Add New Classification", nav, errors: null });
+    }
+  } catch (error) {
+    console.error("Error adding classification:", error);
+    req.flash("notice", "An error occurred while adding classification.");
+    res.status(500).render("inventory/add-classification", { title: "Add New Classification", nav, errors: null });
+  }
+}
 
 
   module.exports = invCont

@@ -252,6 +252,7 @@ body {
 hr {
   display: none;
 }
+
 /* detail view */
 #inv-single {
   list-style: none;
@@ -275,7 +276,22 @@ hr {
   padding: 1rem 2rem;
 }
 
-/* Login page */
+/* Vehicle Managgement view */
+.inventory-links {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--paragraph-font);
+  font-size: 1.25rem;
+  padding: 2rem;
+  padding-top: 0rem;
+}
+
+.inventory-links a {
+  color:var(--primary-color);
+  margin: .5rem;
+}
+
+/* forms */
 .form-container {
   display: flex;
   justify-content: center;
@@ -303,11 +319,22 @@ input, button {
   font-size: 1.25rem;
 }
 
+button {
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.025);
+}
+
  label {
   font-family: var(--paragraph-font);
   color: var(--accent3-color);  
   font-size: 1.25rem;
  }
+
+ /* Login page and form*/
 
  .signup-link {
   text-decoration: none;
@@ -318,7 +345,7 @@ input, button {
  }
 
 .underline {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .password-note {
@@ -329,6 +356,13 @@ input, button {
   font-size: 1rem;
 }
 
+/* add classification form */
+.classification-note {
+  color: var(--accent3-color);
+  font-size: 1rem;
+  font-family: var(--paragraph-font);
+}
+
 /* error page */
 
 .error-container {
@@ -337,13 +371,11 @@ input, button {
 
 /* Flash message */
 .notice {
-  list-style: none;
   font-family: var(--paragraph-font);
   font-size: 1.25rem;
-  color: var(--primary-color);
+  color: var(--accent4-color);
   font-weight: bold;
   margin-bottom: 2rem;
-  text-align: center;
 }
 
 /* footer */
