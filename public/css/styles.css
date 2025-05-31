@@ -335,14 +335,16 @@ input, button {
   padding: 0rem 2rem;
 }
 
-/* Flash message
+/* Flash message */
 .notice {
   list-style: none;
   font-family: var(--paragraph-font);
   font-size: 1.25rem;
-  color: var(--accent3-color);
+  color: var(--primary-color);
   font-weight: bold;
-} */
+  margin-bottom: 2rem;
+  text-align: center;
+}
 
 /* footer */
 

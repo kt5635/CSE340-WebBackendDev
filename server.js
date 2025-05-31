@@ -32,8 +32,6 @@ app.use(session({
   name: 'sessionId',
 }))
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 // Express Messages Middleware
 app.use(require('connect-flash')())
@@ -54,6 +52,8 @@ app.set("layout","./layouts/layout") // not at views root
  *************************/
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 /* ***********************
  * Routes
