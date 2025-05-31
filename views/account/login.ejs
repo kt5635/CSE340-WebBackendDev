@@ -11,12 +11,12 @@
 
 <!-- Login form -->
  <div class="form-container">
-    <form action="/account/login" method="POST">
+    <form id="loginForm" action="/account/login" method="post">
         <label for="email">Email:</label>
-        <input type="email" name="account_email" required>
+        <input type="email" id="accountEmail" name="account_email" required value="<% locals.account_email %>">
 
         <label for="password">Password:</label>
-        <input type="password" name="account_password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+        <input type="password" id="password" name="account_password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
         <div class="password-note">
           <ul>
             <li>Password must have the following:</li>
