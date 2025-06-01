@@ -17,7 +17,6 @@ router.get("/", utilities.handleErrors(invController.buildManagementView));
 // Route to build add classification view
 router.get("/add-classification", utilities.handleErrors(invController.buildAddClassificationView));
 
-//Route to process add classification form
 router.post(
   "/add-classification",
   invValidate.classificationRules(),

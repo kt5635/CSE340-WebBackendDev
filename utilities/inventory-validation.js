@@ -1,5 +1,5 @@
 const utilities = require(".")
-  const { body, validationResult } = require("express-validator")
+  const { body, validationResult } = require("express-validator");
   const validate = {}
 
 validate.classificationRules = () => [
@@ -14,8 +14,9 @@ validate.classificationRules = () => [
 validate.checkClassificationData = async (req, res, next) => {
   const errors = validationResult(req);
   let nav = await utilities.getNav();
- 
+
   if (!errors.isEmpty()) {
+    req.flash("notice", "Validation errors occurred. Please correct the issues.");
     return res.status(400).render("inventory/add-classification", {
       title: "Add New Classification",
       nav,

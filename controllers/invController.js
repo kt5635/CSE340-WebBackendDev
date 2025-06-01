@@ -1,6 +1,7 @@
 const invModel = require("../models/inventory-model")
 const Util = require("../utilities/")
 const utilities = require("../utilities/")
+const { validationResult } = require("express-validator");
 
 const invCont = {}
 
@@ -109,7 +110,7 @@ invCont.processClassification = async function (req, res) {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    req.flash("notice", "Validation errors occurred. Please correct the issues.");
+    req.flash("notice", "Validation errors occurred.");
     return res.status(400).render("inventory/add-classification", {
       title: "Add New Classification",
       nav,
@@ -121,19 +122,29 @@ invCont.processClassification = async function (req, res) {
     const insertResult = await invModel.addClassification(classification_name);
 
     if (insertResult) {
-      nav = await utilities.getNav(); 
-      req.flash("notice", "New classification added successfully!");
-      res.status(201).render("inventory/management", { title: "Inventory Management", nav });
+      req.flash("success", "Classification added successfully!");
+      nav = await utilities.getNav();
+      return res.status(201).render("inventory/add-classification", { 
+        title: "Add New Classification",
+        nav,
+        errors: null
+      });
     } else {
-      req.flash("notice", "Failed to add classification. Please try again.");
-      res.status(500).render("inventory/add-classification", { title: "Add New Classification", nav, errors: null });
+      req.flash("notice", "Failed to add classification.");
+      return res.status(500).render("inventory/add-classification", {
+        title: "Add New Classification",
+        nav,
+        errors: null
+      });
     }
   } catch (error) {
     console.error("Error adding classification:", error);
-    req.flash("notice", "An error occurred while adding classification.");
-    res.status(500).render("inventory/add-classification", { title: "Add New Classification", nav, errors: null });
+    req.flash("notice", "An error occurred.");
+    return res.status(500).render("inventory/add-classification", {
+      title: "Add New Classification",
+      nav,
+      errors: null
+    });
   }
 }
-
-
   module.exports = invCont
