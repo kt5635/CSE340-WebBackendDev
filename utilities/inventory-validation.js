@@ -26,4 +26,36 @@ validate.checkClassificationData = async (req, res, next) => {
   next();
 };
 
+validate.inventoryRules = () => [
+  body("inv_make").trim().escape().notEmpty().withMessage("Make is required."),
+  body("inv_model").trim().escape().notEmpty().withMessage("Model is required."),
+  body("inv_year")
+    .isInt({ min: 1900, max: new Date().getFullYear() }) 
+    .withMessage(`Year must be between 1900 and ${new Date().getFullYear()}.`),
+  body("inv_description").trim().escape().notEmpty().withMessage("Description is required."),
+  body("inv_price").isNumeric().withMessage("Price must be a number."),
+  body("inv_miles")
+    .isInt({ min: 0 }) 
+    .withMessage("Miles must be a non-negative whole number."),
+  body("inv_color").trim().escape().notEmpty().withMessage("Color is required."),
+
+];
+
+validate.checkInventoryData = async (req, res, next) => {
+  const errors = validationResult(req);
+  let nav = await utilities.getNav();
+  let classificationList = await utilities.buildClassificationList(req.body.classification_id);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).render("inventory/add-inventory", {
+      title: "Add New Inventory Item",
+      nav,
+      classificationList,
+      errors,
+      ...req.body
+    });
+  }
+  next();
+};
+
 module.exports = validate

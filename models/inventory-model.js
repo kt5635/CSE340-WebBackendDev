@@ -68,4 +68,34 @@ async function addClassification(classification_name) {
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getInventory, getInventoryByInventoryId, addClassification};
+/* ***************************
+ *  Add inventory data to database
+ * ************************** */
+async function addInventory(inventoryData) {
+  try {
+    const sql = `
+      INSERT INTO inventory (classification_id, inv_make, inv_model, inv_year, inv_miles, inv_description, inv_price, inv_color, inv_image, inv_thumbnail)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      RETURNING *;
+    `;
+    const values = [
+      inventoryData.classification_id,
+      inventoryData.inv_make,
+      inventoryData.inv_model,
+      inventoryData.inv_year,
+      inventoryData.inv_miles,
+      inventoryData.inv_description,
+      inventoryData.inv_price,
+      inventoryData.inv_color,
+      inventoryData.inv_image,
+      inventoryData.inv_thumbnail
+    ];
+    const result = await pool.query(sql, values);
+    return result.rows[0];
+  } catch (error) {
+    console.error("Database Insert Error:", error.message);
+    throw error;
+  }
+}
+
+module.exports = {getClassifications, getInventoryByClassificationId, getInventory, getInventoryByInventoryId, addClassification, addInventory};

@@ -17,6 +17,7 @@ router.get("/", utilities.handleErrors(invController.buildManagementView));
 // Route to build add classification view
 router.get("/add-classification", utilities.handleErrors(invController.buildAddClassificationView));
 
+// Route to post new classification
 router.post(
   "/add-classification",
   invValidate.classificationRules(),
@@ -24,6 +25,16 @@ router.post(
   utilities.handleErrors(invController.processClassification)
 );
 
+// Route to build add inventory view
+router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventoryView));
+
+// Route to post new inventory view
+router.post(
+  "/add-inventory",
+  invValidate.inventoryRules(),
+  invValidate.checkInventoryData,
+  utilities.handleErrors(invController.processInventory)
+);
 // intentional error route
 router.get("/trigger-error", (req, res, next) => {
   const error = new Error("Intentional 500 Server Error: This is a test.");

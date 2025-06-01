@@ -310,13 +310,17 @@ form {
   background-color: var(--primary-color);
 }
 
-input, button {
+input, button, textarea, #classificationList {
   display: block;
   width: 100%;
   padding: .5rem;
   margin: .5rem;
   border-radius: 5px;
   font-size: 1.25rem;
+}
+
+#classificationList {
+
 }
 
 button {
@@ -362,26 +366,6 @@ button:hover {
   font-size: 1rem;
   font-family: var(--paragraph-font);
 }
-
-/* #successMessage {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: var(--secondary-color);
-  color: var(--primary-color);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-.popup-active {
-  display: block;
-  animation: fadeIn 0.3s ease-out;
-} */
 
 /* error page */
 
