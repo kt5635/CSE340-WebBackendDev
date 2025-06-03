@@ -17,6 +17,7 @@ const session = require("express-session")
 const pool = require('./database/')
 const accountRoute = require("./routes/accountRoute");
 const bodyParser = require("body-parser")
+const cookieParser = require("cookie-parser")
 
 /* ***********************
  * Middleware
@@ -53,7 +54,9 @@ app.set("layout","./layouts/layout") // not at views root
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cookieParser())
+app.use(utilities.checkJWTToken)
 
 /* ***********************
  * Routes
@@ -68,42 +71,30 @@ app.use("/account", accountRoute);
 
 app.use("/inventory", inventoryRoute);
 // File Not Found Route 
-app.use(async (err, req, res, next) => {
+
+
+// /* ***********************
+// * Express Error Handler
+// *************************/
+app.use(async (req, res, next) => {
   let nav = await utilities.getNav();
-  console.error(`Error at: "${req.originalUrl}": ${err.message}`);
+  console.error(`404 Error at: "${req.originalUrl}"`);
 
-  let statusCode = err.status || 404;
-  let message = statusCode === 404 
-    ? err.message 
-    : "Something went wrong on our end.";
-
-  res.status(statusCode).render("errors/error", {
-    title: statusCode === 500 ? "500" : err.status,
-    message,
+  res.status(404).render("errors/error", {
+    title: "404 - Page Not Found",
+    message: "Oops! The page you're looking for doesn't exist.",
     nav,
   });
 });
 
-
-/* ***********************
-* Express Error Handler
-*************************/
+// Generic Error Handler for Other Errors (500, etc.)
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav();
   console.error(`Error at: "${req.originalUrl}": ${err.message}`);
 
-  let message;
-  if (err.status === 404) {
-    message = err.message;
-  } else if (err.status === 500) {
-    message = "500 - Internal Server Error! Something went wrong on our end.";
-  } else {
-    message = "Unexpected error occurred.";
-  }
-
   res.status(err.status || 500).render("errors/error", {
     title: err.status || "Server Error",
-    message,
+    message: "Something went wrong on our end.",
     nav,
   });
 });

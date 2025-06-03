@@ -6,9 +6,10 @@ const utilities = require("../utilities/")
 const regValidate = require('../utilities/account-validation')
 
 // Route to account
-router.get("/login", utilities.handleErrors(accountController.buildLogin))
 
+router.get("/login", utilities.handleErrors(accountController.buildLogin))
 router.get("/register", utilities.handleErrors(accountController.buildRegister))
+router.get("/account", utilities.checkLogin, utilities.handleErrors(accountController.buildAccount))
 
 // Process the registration data
 router.post(
@@ -21,9 +22,9 @@ router.post(
 // Process the login attempt
 router.post(
   "/login",
-  (req, res) => {  
-    res.status(200).send('login process')
-  }
+  regValidate.loginRules(),
+  regValidate.checkLoginData,
+  utilities.handleErrors(accountController.accountLogin)
 )
 
 
