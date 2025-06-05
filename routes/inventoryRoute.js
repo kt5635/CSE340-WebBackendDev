@@ -17,6 +17,8 @@ router.get("/", utilities.checkLogin, utilities.handleErrors(invController.build
 // Route to build add classification view
 router.get("/add-classification", utilities.handleErrors(invController.buildAddClassificationView));
 
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+
 // Route to post new classification
 router.post(
   "/add-classification",

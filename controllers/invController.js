@@ -77,17 +77,12 @@ invCont.buildByInventoryId = async function (req, res, next) {
  * ************************** */
 
 invCont.buildManagementView = async function (req, res, next) {
-  let nav;
-  try {
-    nav = await utilities.getNav();
-  } catch (error) {
-    console.error("Navigation error:", error);
-    return next({ status: 500, message: "Failed to load navigation." });
-  }
-
+  let nav = await utilities.getNav()
+  const classificationSelect = await utilities.buildClassificationList()
   res.render("inventory/management", {
     title: "Vehicle Management",
     nav,
+    classificationSelect,
     errors: null 
   });
 };
@@ -123,12 +118,8 @@ invCont.processClassification = async function (req, res) {
 
     if (insertResult) {
         req.flash("success", "Classification added successfully!");
-        let nav = await utilities.getNav(); // Refresh navigation
-        return res.status(201).render("inventory/management", { 
-            title: "Vehicle Management",
-            nav,
-            errors: null 
-        });
+        let nav = await utilities.getNav();
+        return res.redirect("/inv");
     } else {
         req.flash("notice", "Failed to add classification.");
         return res.status(500).render("inventory/add-classification", {
@@ -215,5 +206,18 @@ if (!errors.isEmpty()) {
     });
   }
 };
+
+/* ***************************
+*  Return Inventory by Classification As JSON
+* ************************** */
+invCont.getInventoryJSON = async(req, res, next) => {
+  const classification_id = parseInt(req.params.classification_id)
+  const invData = await invModel.getInventoryByClassificationId(classification_id)
+  if (invData[0].inv_id) {
+    return res.json(invData)
+  } else {
+    next(new Error("No data returned"))
+  }
+}
 
   module.exports = invCont

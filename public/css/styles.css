@@ -42,11 +42,13 @@ h1 {
 h2 {
   font-family: var(--heading-font);
   font-size: 2rem;
+  padding: 1rem;
 }
 
 p {
   font-family: var(--paragraph-font);
   font-size: 1.25rem;
+  margin-left: 2rem;
 }
 
 li {
@@ -319,9 +321,6 @@ input, button, textarea, #classificationList {
   font-size: 1.25rem;
 }
 
-#classificationList {
-
-}
 
 button {
   cursor: pointer;
@@ -367,6 +366,40 @@ button:hover {
   font-family: var(--paragraph-font);
 }
 
+/* Vehicle Management page */
+.classification-select {
+  max-width: 30rem;
+  padding: 1rem 2rem;
+}
+
+#inventoryDisplay {
+  width: 75%;
+  margin: 2rem;
+  font-family: var(--paragraph-font);
+  font-size: 1.25rem;
+  padding: .25rem;
+}
+
+#inventoryDisplay th, #inventoryDisplay td {
+  border: 1px solid var(--primary-color);
+  padding: .5rem
+}
+
+#inventoryDisplay th {
+  background-color: var(--secondary-color);
+  font-family: var(--heading-font);
+}
+
+#inventoryDisplay tr {
+  background-color: var(--secondary-color);
+}
+
+#inventoryDisplay a {
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--primary-color);
+}
+
 /* error page */
 
 .error-container {
@@ -380,6 +413,7 @@ button:hover {
   color: var(--accent4-color);
   font-weight: bold;
   margin-bottom: 2rem;
+  list-style: none;
 }
 
 /* footer */
