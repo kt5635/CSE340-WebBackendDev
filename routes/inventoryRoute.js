@@ -23,6 +23,9 @@ router.get("/getInventory/:classification_id", utilities.handleErrors(invControl
 // Route to update/edit inventory
 router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView))
 
+// Route to delete inventory
+router.get("/delete/:inv_id", utilities.handleErrors(invController.deleteInventoryView))
+
 // Route to post new classification
 router.post(
   "/add-classification",
@@ -46,7 +49,14 @@ router.post(
 router.post( 
   "/update/", 
   invValidate.checkUpdateData,
-  utilities.handleErrors(invController.updateInventory))
+  utilities.handleErrors(invController.updateInventory)
+);
+
+// Route to post delete inventory 
+router.post( 
+  "/delete/", 
+  utilities.handleErrors(invController.deleteInventory)
+);
 
 // intentional error route
 router.get("/trigger-error", (req, res, next) => {
