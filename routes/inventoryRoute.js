@@ -43,7 +43,10 @@ router.post(
 );
 
 // Route to post edited inventory 
-router.post("/update/", utilities.handleErrors(invController.updateInventory))
+router.post( 
+  "/update/", 
+  invValidate.checkUpdateData,
+  utilities.handleErrors(invController.updateInventory))
 
 // intentional error route
 router.get("/trigger-error", (req, res, next) => {

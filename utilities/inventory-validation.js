@@ -2,6 +2,7 @@ const utilities = require(".")
   const { body, validationResult } = require("express-validator");
   const validate = {}
 
+  // check classification rules and validate classification data
 validate.classificationRules = () => [
   body("classification_name")
     .trim()
@@ -26,6 +27,7 @@ validate.checkClassificationData = async (req, res, next) => {
   next();
 };
 
+// check inventory rules and validate inventory data
 validate.inventoryRules = () => [
   body("inv_make").trim().escape().notEmpty().withMessage("Make is required."),
   body("inv_model").trim().escape().notEmpty().withMessage("Model is required."),
@@ -51,6 +53,25 @@ validate.checkInventoryData = async (req, res, next) => {
       title: "Add New Inventory Item",
       nav,
       classificationList,
+      errors,
+      ...req.body
+    });
+  }
+  next();
+};
+
+// check and validate inventory update data
+validate.checkUpdateData = async (req, res, next) => {
+  const errors = validationResult(req);
+  let nav = await utilities.getNav();
+  let classificationList = await utilities.buildClassificationList(req.body.inv_id);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).render("./inventory/edit-inventory", {
+      title: "Edit " + itemName,
+      nav,
+      classificationList,
+      inv_id,
       errors,
       ...req.body
     });
