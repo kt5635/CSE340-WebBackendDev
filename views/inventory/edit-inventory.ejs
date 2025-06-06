@@ -1,0 +1,56 @@
+<!-- Content Heading -->
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<%- messages() %>
+
+<% if (errors && errors.array().length > 0) { %>
+  <ul class="notice">
+    <% errors.array().forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<div class="form-container">
+<form id="editInventoryForm" action="/inv/update" method="POST">
+  <label for="classificationList">Classification</label>
+  <%- classificationSelect %>
+
+  <label for="make">Make</label>
+  <input type="text" name="inv_make" id="inv_make" required value="<%= inv_make || '' %>">
+
+  <label for="model">Model</label>
+  <input type="text" name="inv_model" id="inv_model" required value="<%= inv_model || '' %>">
+
+  <label for="year">Year</label>
+  <input type="number" name="inv_year" id="inv_year" required min="1900" max="2099" value="<%= inv_year || '' %>">
+
+  <label for="description">Description</label>
+  <textarea name="inv_description" id="inv_description" required><%= inv_description || '' %></textarea>
+
+  <label for="price">Price</label>
+  <input type="number" name="inv_price" id="inv_price" required step="0.01" value="<%= inv_price || '' %>">
+
+  <label for="miles">Miles</label>
+  <input type="number" name="inv_miles" id="inv_miles" required min="0" step="1" value="<%= inv_miles || '' %>">
+
+  <label for="image">Image Path</label>
+  <input type="text" name="inv_image" id="inv_image" value="<%= inv_image || '/images/no-image.png' %>">
+
+  <label for="thumbnail">Thumbnail Path</label>
+  <input type="text" name="inv_thumbnail" id="inv_thumbnail" value="<%= inv_thumbnail || '/images/no-image.png' %>">
+
+  <label for="color">Color</label>
+  <input type="text" name="inv_color" id="inv_color" required value="<%= inv_color || '' %>">
+
+  <button type="submit">Update Inventory</button>
+
+  <input type="hidden" name="inv_id"
+    <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+    <% } %>>
+</form>
+</div>

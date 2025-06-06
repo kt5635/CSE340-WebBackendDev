@@ -17,7 +17,11 @@ router.get("/", utilities.checkLogin, utilities.handleErrors(invController.build
 // Route to build add classification view
 router.get("/add-classification", utilities.handleErrors(invController.buildAddClassificationView));
 
+// Route to get inventory by classification in inventory management view
 router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+
+// Route to update/edit inventory
+router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView))
 
 // Route to post new classification
 router.post(
@@ -37,6 +41,10 @@ router.post(
   invValidate.checkInventoryData,
   utilities.handleErrors(invController.processInventory)
 );
+
+// Route to post edited inventory 
+router.post("/update/", utilities.handleErrors(invController.updateInventory))
+
 // intentional error route
 router.get("/trigger-error", (req, res, next) => {
   const error = new Error("Intentional 500 Server Error: This is a test.");
