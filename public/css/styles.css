@@ -39,7 +39,7 @@ h1 {
   text-transform: capitalize;
 }
 
-h2 {
+h2, h3 {
   font-family: var(--heading-font);
   font-size: 2rem;
   padding: 1rem;
@@ -398,6 +398,11 @@ button:hover {
   text-decoration: none;
   cursor: pointer;
   color: var(--primary-color);
+}
+/* account page */
+.account-link {
+  color:var(--primary-color);
+  margin: .5rem;
 }
 
 /* error page */

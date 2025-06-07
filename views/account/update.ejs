@@ -1,0 +1,50 @@
+<!-- Content Heading -->
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<!-- flash message -->
+<%- messages() %>
+
+
+<!-- update account information form -->
+<div class="form-container">
+    <form id="updateAccountForm" action="/account/update" method="POST">
+        <label for="first-name">First Name</label>
+        <input type="text" name="account_firstname" id="accountFirstname" required value="<%= account_firstname || '' %>">
+
+        <label for="Last-name">Last Name</label>
+        <input type="text" name="account_lastname" id="accountLastname" required value="<%= account_lastname || '' %>">
+
+        <label for="email">Email:</label>
+        <input type="email" id="accountEmail" name="account_email" required value="<%= account_email || '' %>">
+
+        <button type="submit">Update Account</button>
+
+        <input type="hidden" name="account_id" value="<%= accountData.account_id %>">
+    </form>
+
+</div>
+ 
+<!-- update account password form -->
+<div class="form-container">
+    <form id="updatePasswordForm" action="/account/update-password" method="post">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="account_password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+        <div class="password-note">
+          <ul>
+            <li>Warning: Entering a new password will<br>update the current password.<br><br>New password must have the following.</li>
+            <li>-Be at least 12 characters</li>
+            <li>-Contain 1 capital letter</li>
+            <li>-Contain 1 number</li>
+            <li>-Contain 1 special character</li>
+          </ul>
+        </div> 
+
+        <button type="submit">Update Password</button>
+
+        <input type="hidden" name="account_id" value="<%= accountData.account_id %>">
+    </form>
+</div>

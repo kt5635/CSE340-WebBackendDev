@@ -5,56 +5,54 @@ const invController = require("../controllers/invController")
 const utilities = require("../utilities");
 const invValidate = require("../utilities/inventory-validation");
 
-// Route to build inventory by classification view
+// Route to build inventory by classification view and inventory details by inventory view
 router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId));
-
-// Route to build inventory details by inventory view
 router.get("/detail/:inventoryId", utilities.handleErrors(invController.buildByInventoryId));
 
 // Route to build management view
-router.get("/", utilities.checkLogin, utilities.handleErrors(invController.buildManagementView));
+router.get("/", utilities.checkLogin, utilities.checkAdminOrEmployee, utilities.handleErrors(invController.buildManagementView));
 
 // Route to build add classification view
-router.get("/add-classification", utilities.handleErrors(invController.buildAddClassificationView));
+router.get("/add-classification", utilities.checkAdminOrEmployee, utilities.handleErrors(invController.buildAddClassificationView));
 
 // Route to get inventory by classification in inventory management view
-router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+router.get("/getInventory/:classification_id", utilities.checkAdminOrEmployee, utilities.handleErrors(invController.getInventoryJSON))
 
-// Route to update/edit inventory
-router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView))
-
-// Route to delete inventory
-router.get("/delete/:inv_id", utilities.handleErrors(invController.deleteInventoryView))
+// Route to update/edit inventory and delete inventory
+router.get("/edit/:inv_id", utilities.checkAdminOrEmployee, utilities.handleErrors(invController.editInventoryView))
+router.get("/delete/:inv_id", utilities.checkAdminOrEmployee, utilities.handleErrors(invController.deleteInventoryView))
 
 // Route to post new classification
 router.post(
   "/add-classification",
+  utilities.checkAdminOrEmployee,
   invValidate.classificationRules(),
   invValidate.checkClassificationData,
   utilities.handleErrors(invController.processClassification)
 );
 
 // Route to build add inventory view
-router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventoryView));
+router.get("/add-inventory", utilities.checkAdminOrEmployee, utilities.handleErrors(invController.buildAddInventoryView));
 
 // Route to post new inventory view
 router.post(
   "/add-inventory",
+  utilities.checkAdminOrEmployee,
   invValidate.inventoryRules(),
   invValidate.checkInventoryData,
   utilities.handleErrors(invController.processInventory)
 );
 
-// Route to post edited inventory 
+// Route to post edited inventory and delete inventory 
 router.post( 
   "/update/", 
+  utilities.checkAdminOrEmployee,
   invValidate.checkUpdateData,
   utilities.handleErrors(invController.updateInventory)
 );
-
-// Route to post delete inventory 
 router.post( 
   "/delete/", 
+  utilities.checkAdminOrEmployee,
   utilities.handleErrors(invController.deleteInventory)
 );
 

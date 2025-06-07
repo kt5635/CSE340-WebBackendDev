@@ -155,3 +155,22 @@ Util.checkLogin = (req, res, next) => {
     return res.redirect("/account/login")
   }
 }
+
+/* ****************************************
+ *  Check if Login is Employee/Admin
+ * ************************************ */
+Util.checkAdminOrEmployee = (req, res, next) => {
+  if (!res.locals.loggedin) {
+    req.flash("notice", "Please login.");
+    return res.redirect("/account/login")
+  }
+
+  const accountType = res.locals.accountData?.account_type;
+
+  if (accountType === "Employee" || accountType === "Admin") {
+    next();
+  } else {
+    req.flash("notice", "You do not have permission to access this resource.");
+    return res.redirect("/account/login");
+  }
+}

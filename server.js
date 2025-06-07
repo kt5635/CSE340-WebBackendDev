@@ -58,6 +58,12 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(utilities.checkJWTToken)
 
+// Middleware to pass authentication status to views
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = res.locals.loggedin || false;
+  next();
+});
+
 /* ***********************
  * Routes
  *************************/
