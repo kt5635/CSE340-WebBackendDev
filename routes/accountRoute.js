@@ -5,11 +5,12 @@ const accountController = require("../controllers/accountController")
 const utilities = require("../utilities/")
 const regValidate = require('../utilities/account-validation')
 
+
 // Route to account
 
 router.get("/login", utilities.handleErrors(accountController.buildLogin))
 router.get("/register", utilities.handleErrors(accountController.buildRegister))
-router.get("/account", utilities.checkLogin, utilities.handleErrors(accountController.buildAccount))
+router.get("/account", utilities.checkLogin, utilities.handleErrors(accountController.buildAccount));
 router.get('/account/logout', (req, res) => {
   res.clearCookie("jwt");
   res.redirect("/");

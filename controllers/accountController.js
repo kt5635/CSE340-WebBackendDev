@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken");
 const validate = require("../utilities/account-validation");
 require("dotenv").config()
-const { validationResult } = require("express-validator");
+const { body, validationResult } = require("express-validator");
 
 /* ****************************************
 *  Deliver login view
@@ -157,49 +157,42 @@ async function buildupdateAccountView(req, res, next) {
 * *************************************** */
 async function processAccountUpdate(req, res) {
   let nav = await utilities.getNav()
-  const {account_id, account_firstname, account_lastname, account_email } = req.body
+  const { account_id, account_firstname, account_lastname, account_email } = req.body;
+  const errors = validationResult(req);
 
-  // const errors = validationResult(req);
-  // if (!errors.isEmpty()) {
-  //   req.flash("notice", "Error updating account. Please try again.")
-  //   return res.render("account/update", {
-  //     title: "Update Account",
-  //     nav, 
-  //     errors: errors.array(),
-  //     account_firstname,
-  //     account_lastname,
-  //     account_email,
-  //   })
-  // }
+  if (!errors.isEmpty()) {
+    req.flash("notice", "Error updating account. Please try again.")
+    return res.render("account/update", {
+      title: "Update Account",
+      nav, 
+      errors: errors.array(),
+      account_firstname,
+      account_lastname,
+      account_email,
+    })
+  }
 
   try {
-    const updateResult = await accountModel.updateAccountInfo(account_id, account_firstname, account_lastname, account_email);
-    console.log("Database update result:", updateResult);
+    const accountData = { account_id, account_firstname, account_lastname, account_email };
+    const updateResult = await accountModel.updateAccountInfo(accountData);
 
     if (updateResult) {
       req.flash("notice", "Account updated successfully!");
-      return res.redirect("/account");
+      const updatedAccountData = await accountModel.getAccountById(account_id);
+      res.locals.accountData = updatedAccountData; 
+
+      return res.redirect("/account/account");
     } else {
       console.error("Error: No rows updated.");
       req.flash("notice", "Error updating account.");
       return res.redirect("/account/update/" + account_id);
     }
-  } catch (error) {
-    console.error("Update Error:", error.message);
-    req.flash("notice", "Error updating account.");
-    return res.redirect("/account/update/" + account_id);
-  }
+    } catch (error) {
+        console.error("Update Error:", error.message);
+        req.flash("notice", "Error updating account.");
+        return res.redirect("/account/update/" + account_id);
+    }
 }
-
-//   const updateResult = await accountModel.updateAccountInfo(account_id, account_firstname, account_lastname, account_email)
-//   if (updateResult) {
-//     req.flash("notice", "Account updated successfully!");
-//     return res.redirect("/account");
-//     } else {
-//     req.flash("notice", "Error updating account.");
-//     return res.redirect("/account/update/" + account_id);
-//   }
-// }
 
 /* ****************************************
 *  Process updated account password
@@ -208,28 +201,34 @@ async function processPasswordChange(req, res) {
   let nav = await utilities.getNav();
   const { account_id, account_password } = req.body;
 
+  if (!account_id) {
+    console.error("Missing account_id in request body");
+    req.flash("notice", "Error: Missing account ID.");
+    return res.redirect("/account/update");
+  }
 
-
-  // const errors = validationResult(req);
-  // if (!errors.isEmpty()) {
-  //   req.flash("notice", "Error changing password. Please try again.");
-  //   return res.render("account/update", { 
-  //     title: "Update Account", 
-  //     nav,
-  //     errors: errors.array(),
-  //     account_id
-  //   });
-  // }
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    req.flash("notice", "Error changing password. Please try again.");
+    return res.render("account/update", { 
+      title: "Update Account", 
+      nav,
+      errors: errors.array(),
+      account_id
+    });
+  }
 
   try {
+    console.log("Processing password change for account ID:", account_id);
 
     const hashedPassword = await bcrypt.hash(account_password, 10);
     const updateResult = await accountModel.updatePassword(account_id, hashedPassword);
 
     if (updateResult) {
       req.flash("notice", "Password updated successfully!");
-      return res.redirect("/account");
+      return res.redirect("/account/account");
     } else {
+      console.error("Error: No rows updated.");
       req.flash("notice", "Error updating password.");
       return res.redirect("/account/update/" + account_id);
     }

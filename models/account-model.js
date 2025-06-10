@@ -58,8 +58,6 @@ async function getAccountById(account_id) {
 * ***************************** */
 async function updateAccountInfo(accountData) {
   try {
-    console.log("Updating account with data:", accountData);
-
     const sql = `
       UPDATE account
       SET account_firstname = $1,
@@ -75,10 +73,7 @@ async function updateAccountInfo(accountData) {
       accountData.account_id,
     ];
 
-    console.log("Executing query with values:", values);
     const result = await pool.query(sql, values);
-
-    console.log("Query result:", result.rows);
 
     if (result.rowCount === 0) {
       console.error("Error: No matching account found for ID:", accountData.account_id);
@@ -91,19 +86,18 @@ async function updateAccountInfo(accountData) {
   }
 }
 
-async function updatePassword(accountData) {
-  try {
+async function updatePassword(account_id, hashedPassword) {
+  try { 
+
     const sql = `
       UPDATE account
       SET account_password = $1
       WHERE account_id = $2
       RETURNING *;
     `;
-    const values = [
-      accountData.account_password,
-      accountData.account_id
-    ];
+    const values = [hashedPassword, account_id];
     const result = await pool.query(sql, values);
+
     return result.rows[0];
   } catch (error) {
     console.error("Error updating password:", error.message);
