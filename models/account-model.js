@@ -104,4 +104,43 @@ async function updatePassword(account_id, hashedPassword) {
     throw error;
   }
 }
-module.exports = {registerAccount, checkExistingEmail, getAccountByEmail, getAccountById, updateAccountInfo, updatePassword};
+
+/* ***************************
+ *  Get all User data
+ * ************************** */
+async function getUserData(){
+  return await pool.query("SELECT * FROM public.account ORDER BY account_firstname")
+}
+
+/* *****************************
+* Update employee access
+* ***************************** */
+async function updateEmployeeAccess(accountData) {
+  try {
+    const sql = `
+      UPDATE account
+      SET account_type = $1
+      WHERE account_id = $2
+      RETURNING *;
+    `;
+    const values = [
+      accountData.account_type,
+      accountData.account_id,
+    ];
+    if (!accountData.account_type) {
+      throw new Error("Account type is required!");
+    }
+    const result = await pool.query(sql, values);
+
+    if (result.rowCount === 0) {
+      console.error("Error: No matching account found for ID:", accountData.account_id);
+    }
+
+    return result.rows[0];
+  } catch (error) {
+    console.error("Database Update Error:", error.message);
+    throw error;
+  }
+}
+
+module.exports = {registerAccount, checkExistingEmail, getAccountByEmail, getAccountById, updateAccountInfo, updatePassword, getUserData, updateEmployeeAccess};

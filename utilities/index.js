@@ -1,7 +1,9 @@
+const { getUserData } = require("../models/account-model")
 const invModel = require("../models/inventory-model")
 const Util = {}
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
+const accountModel = require("../models/account-model")
 
 /* ************************
  * Constructs the nav HTML unordered list
@@ -91,7 +93,7 @@ Util.buildVehicleDetail = function(vehicle) {
 };
 
 /* **************************************
-* Build the single view HTML
+* Build classification list
 * ************************************ */
 Util.buildClassificationList = async function (classification_id = null) {
     let data = await invModel.getClassifications()
@@ -174,3 +176,44 @@ Util.checkAdminOrEmployee = (req, res, next) => {
     return res.redirect("/account/login");
   }
 }
+
+/* ****************************************
+ *  Check if Login is an Admin
+ * ************************************ */
+Util.checkAdmin= (req, res, next) => {
+  if (!res.locals.loggedin) {
+    req.flash("notice", "Please login.");
+    return res.redirect("/account/login")
+  }
+
+  const accountType = res.locals.accountData?.account_type;
+
+  if (accountType === "Admin") {
+    next();
+  } else {
+    req.flash("notice", "You do not have permission to access this resource.");
+    return res.redirect("/account/login");
+  }
+}
+
+/* **************************************
+* Build user list
+* ************************************ */
+Util.buildUserList = async function (account_id = null) {
+    let data = await accountModel.getUserData()
+    let userList =
+      '<select name="account_id" id="userList" required>'
+    userList += "<option value=''>Choose a User</option>"
+    data.rows.forEach((row) => {
+      userList += '<option value="' + row.account_id + '"'
+      if (
+        account_id != null &&
+        row.account_id == account_id
+      ) {
+        userList += " selected "
+      }
+      userList += ">" + row.account_firstname + " " + row.account_lastname + "</option>"
+    })
+    userList += "</select>"
+    return userList
+  }

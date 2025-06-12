@@ -210,7 +210,7 @@ async function processPasswordChange(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     req.flash("notice", "Error changing password. Please try again.");
-    return res.render("account/update", { 
+    return res.render("/account/update", { 
       title: "Update Account", 
       nav,
       errors: errors.array(),
@@ -253,4 +253,65 @@ async function logoutUser(req, res) {
   }
 }
 
-module.exports = {buildLogin, buildRegister, registerAccount, accountLogin, buildAccount, buildupdateAccountView, processAccountUpdate, processPasswordChange, logoutUser}
+/* ****************************************
+*  Update Manage Employee view
+* *************************************** */
+async function buildManageEmployeeView(req, res, next) {
+  const account_id = parseInt(req.params.account_id)
+  
+  let nav = await utilities.getNav()
+  const accountData = await accountModel.getAccountById(account_id);
+  let userList = await utilities.buildUserList();
+  res.render("account/manage-employee", {
+    title: "Manage Employee Access",
+    nav,
+    userList,
+    errors: null,
+  })
+}
+
+/* ****************************************
+*  Process employee access
+* *************************************** */
+async function processEmployeeAccess(req, res) {
+  let nav = await utilities.getNav()
+
+  const account_id = parseInt(req.body.account_id); 
+  const account_type = req.body.account_type;
+
+  console.log("Processing Employee Access with:", { account_id, account_type });
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    req.flash("notice", "Error updating account. Please try again.")
+    return res.render("account/manage-employee", {
+      title: "Manage Employee Access",
+      nav, 
+      errors: null,
+      account_type
+    })
+  }
+
+  try {
+    const accountData = { account_id, account_type };
+    const updateResult = await accountModel.updateEmployeeAccess(accountData);
+
+    if (updateResult) {
+      req.flash("notice", "Access updated successfully!");
+      const updatedAccountData = await accountModel.getAccountById(account_id);
+      res.locals.accountData = updatedAccountData; 
+
+      return res.redirect("/account/account");
+    } else {
+      console.error("Error: No rows updated.");
+      req.flash("notice", "Error updating account.");
+      return res.redirect("/account/manage-employee/" + account_id);
+    }
+    } catch (error) {
+        console.error("Update Error:", error.message);
+        req.flash("notice", "Error updating account.");
+        return res.redirect(`/account/manage-employee/${account_id}`);
+    }
+}
+
+module.exports = {buildLogin, buildRegister, registerAccount, accountLogin, buildAccount, buildupdateAccountView, processAccountUpdate, processPasswordChange, logoutUser, buildManageEmployeeView, processEmployeeAccess}

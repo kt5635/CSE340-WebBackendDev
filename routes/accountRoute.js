@@ -15,6 +15,7 @@ router.get('/account/logout', (req, res) => {
   res.clearCookie("jwt");
   res.redirect("/");
 });
+router.get('/manage-employee', utilities.checkLogin, utilities.checkAdmin, utilities.handleErrors(accountController.buildManageEmployeeView))
 
 // Route to update account information
 router.get("/update/:account_id", utilities.checkLogin, utilities.handleErrors(accountController.buildupdateAccountView))
@@ -42,15 +43,24 @@ router.post(
 router.post(
   "/update",
   utilities.checkLogin,
-  // regValidate.checkUpdateData,
+  regValidate.checkUpdateData(),
   utilities.handleErrors(accountController.processAccountUpdate)
 )
 
 router.post(
   "/update-password",
   utilities.checkLogin, 
-  // regValidate.checkPasswordChange,
+  regValidate.checkPasswordChange(),
   utilities.handleErrors(accountController.processPasswordChange)
+);
+
+// Process the Employee access data
+router.post(
+  "/manage-employee",
+  utilities.checkLogin,
+  utilities.checkAdmin,
+  regValidate.checkManageEmployeeData(),
+  utilities.handleErrors(accountController.processEmployeeAccess)
 );
 
 

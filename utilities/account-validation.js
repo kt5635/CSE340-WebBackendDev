@@ -54,9 +54,9 @@ const accountModel = require("../models/account-model")
     ]
   }
 
-  /* ******************************
- * Check data and return errors or continue to registration
- * ***************************** */
+/* ******************************
+* Check data and return errors or continue to registration
+* ***************************** */
 validate.checkRegData = async (req, res, next) => {
   const { account_firstname, account_lastname, account_email } = req.body
   const errors = validationResult(req);
@@ -75,9 +75,9 @@ validate.checkRegData = async (req, res, next) => {
   next()
 }
 
-  /* ******************************
- * Check data and return errors or continue to account
- * ***************************** */
+/* ******************************
+* Check data and return errors or continue to account
+* ***************************** */
 validate.loginRules = () => [
   body("account_email").isEmail().withMessage("A valid email is required."),
   body("account_password").trim().notEmpty().withMessage("Password is required."),
@@ -98,9 +98,9 @@ validate.checkLoginData = async (req, res, next) => {
   next();
 };
 
-  /* ******************************
- * Check data and return errors for updating account information and password
- * ***************************** */
+/* ******************************
+* Check data and return errors for updating account information and password
+* ***************************** */
 validate.checkUpdateData = () => [
 
   body("account_firstname")
@@ -160,5 +160,18 @@ validate.checkPasswordChange = () => [
       return true;
     }),
     ]
+
+/* ******************************
+* Check update employee access data
+* ***************************** */
+validate.checkManageEmployeeData = () => [
+  body("account_id")
+    .isInt({ min: 1 })
+    .withMessage("Account ID must be a valid positive integer."),
+  
+  body("account_type")
+    .isIn(["Client", "Employee", "Admin"])
+    .withMessage("Invalid account type. Choose Client, Employee, or Admin.")
+];
 
 module.exports = validate

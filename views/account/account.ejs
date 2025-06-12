@@ -16,3 +16,8 @@
   <h3>Inventory Management</h3>
   <p><a href="/inv" class="account-link">Manage Inventory</a></p>
 <% } %>
+
+<% if (accountData.account_type === "Admin") { %>
+  <h3>Employee Management</h3>
+  <p><a href="/account/manage-employee" class="account-link">Manage Employee Account</a></p>
+<% } %>
